@@ -7,10 +7,10 @@ if (localStorage.favs) {
     favs = JSON.parse(localStorage.favs)
 }
 
-document.getElementById("date").innerText = currentDayFormat
+document.getElementById("current-data").innerText += ` (${currentDayFormat})`
 
 buildFavs()
-buildForeCast()
+buildForecast()
 
 function buildFavs() {
     for (var i = 0; i < favs.length; i++) {
@@ -25,7 +25,7 @@ function buildFavs() {
     }
 }
 
-function buildForeCast() {
+function buildForecast() {
     for (var i = 1; i < 6; i++) {
         document.getElementById(`day-${i}-date`).innerText = currentDay.add(1, 'd').format("M/D/Y")
     }
@@ -52,13 +52,14 @@ async function updateInformation(city) {
 
     // get important data from returned object
     var currentTemp = Math.round(currentData.main.temp)
+    var weatherImg = forecastData.current.weather[0].icon
     var currentHumidity = currentData.main.humidity
     var currentWindSpeed = Math.round(currentData.wind.speed * 36) / 10
     var currentUVIndex = forecastData.current.uvi
 
 
     // update text area to display weather data
-    document.getElementById("city-name").innerText = currentData.name
+    document.getElementById("current-data").innerHTML = `${currentData.name} (${currentDayFormat}) <img src="http://openweathermap.org/img/wn/${weatherImg}.png" /> `
     document.getElementById("temp").innerText = `Temperature: ${currentTemp} °C`
     document.getElementById("humidity").innerText = `Humidity: ${currentHumidity}%`
     document.getElementById("wind-speed").innerText = `Wind Speed: ${currentWindSpeed} KPH`
@@ -70,6 +71,9 @@ async function updateInformation(city) {
         var temp = Math.round(forecastData.daily[i].temp.day)
         var humidity = forecastData.daily[i].humidity
 
+        document.getElementById(`day-${i}-date`).innerText = currentDay.add(i, 'd').format("M/D/Y")
+        currentDay= moment()
+        document.getElementById(`day-${i}-date`).innerHTML += `<img src='http://openweathermap.org/img/wn/${forecastData.daily[i].weather[0].icon}.png' />`
         document.getElementById(`day-${i}-temp`).innerText = `Temperature: ${temp} °C`
         document.getElementById(`day-${i}-humidity`).innerText = `Humidity: ${humidity}%`
     }
