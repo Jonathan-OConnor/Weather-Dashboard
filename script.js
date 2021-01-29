@@ -1,16 +1,18 @@
 var currentData
 var forecastData
-var currentDay = moment().format("M/D/Y")
+var currentDay = moment()
+var currentDayFormat = moment().format("M/D/Y")
 var favs = []
 if (localStorage.favs) {
     favs = JSON.parse(localStorage.favs)
 }
 
-document.getElementById("date").innerText= currentDay
+document.getElementById("date").innerText = currentDayFormat
 buildFavs()
+buildForeCast()
 
 function buildFavs() {
-    for (var i=0; i < favs.length; i++){
+    for (var i = 0; i < favs.length; i++) {
         var favRow = document.createElement("div")
         favRow.class = "row"
         document.getElementById("favourites").appendChild(favRow)
@@ -21,6 +23,13 @@ function buildFavs() {
     }
 }
 
+function buildForeCast(){
+    for (var i = 1; i < 6; i++) {
+        document.getElementById(`day-${i}-date`).innerText = currentDay.add(1, 'd').format("M/D/Y")
+    }
+    currentDay = moment()
+}
+
 async function citySearch(event) {
     event.preventDefault()
 
@@ -28,16 +37,16 @@ async function citySearch(event) {
     city = document.getElementById("city").value
     currentData = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=557ace5a3feab4dc1227705af9d390c9`).then(r => r.json())
 
-    lat= currentData.coord.lat
-    lon= currentData.coord.lon
+    lat = currentData.coord.lat
+    lon = currentData.coord.lon
 
     // make API to get the city's current UV data
     currentUVData = await fetch(`https://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&appid=557ace5a3feab4dc1227705af9d390c9`).then(r => r.json())
-    
+
     // get important data from returned object
     var currentTemp = Math.round(currentData.main.temp)
     var currentHumidity = currentData.main.humidity
-    var currentWindSpeed = Math.round(currentData.wind.speed * 36)/10
+    var currentWindSpeed = Math.round(currentData.wind.speed * 36) / 10
     var currentUVIndex = currentUVData.value
 
 
@@ -45,22 +54,20 @@ async function citySearch(event) {
     document.getElementById("city-name").innerText = currentData.name
     document.getElementById("temp").innerText = `Temperature: ${currentTemp} °C`
     document.getElementById("humidity").innerText = `Humidity: ${currentHumidity}%`
-    document.getElementById("wind-speed").innerText= `Wind Speed: ${currentWindSpeed} KPH` 
-    document.getElementById("uv-index").innerText= `UV Index: ${currentUVIndex}`  
+    document.getElementById("wind-speed").innerText = `Wind Speed: ${currentWindSpeed} KPH`
+    document.getElementById("uv-index").innerText = `UV Index: ${currentUVIndex}`
 
     // get information for 5 day forecast
     forecastData = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=557ace5a3feab4dc1227705af9d390c9`).then(r => r.json())
 
-    for (var i=0; i < forecastData.list.length; i += 8){
-        var temp = forecastData.list[i].main.temp
-        var humidity= forecastData.list[i].main.humidity
+    for (var i = 0; i < forecastData.list.length; i += 8) {
+        var temp = Math.round(forecastData.list[i].main.temp)
+        var humidity = forecastData.list[i].main.humidity
 
-        var futureForcast = document.createElement("div")
-        futureForcast.innerText += temp
-        futureForcast.innerText += humidity
-        document.getElementById("forecast-row").appendChild(futureForcast)
+        document.getElementById(`day-${(i + 8) / 8}-temp`).innerText = `Temperature: ${temp} °C`
+        document.getElementById(`day-${(i + 8) / 8}-humidity`).innerText = `Humidity: ${humidity}%`
     }
-
+    
     console.log(forecastData)
     // add onto the favourites column if city is not already in favourites
     if (favs.includes(currentData.name) == false) {
@@ -76,7 +83,7 @@ async function citySearch(event) {
         localStorage.favs = JSON.stringify(favs)
     }
 
- 
+
 
 }
 
