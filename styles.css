@@ -11,10 +11,9 @@ header{
 }
 
 .forecast-day{
-    background-color: 	#0066CC ;
     color: white;
     padding: 10px;
-    border: 2px solid black;
+    min-height: 100%;
 }
 .side-bar{
     padding-right: 50px;
