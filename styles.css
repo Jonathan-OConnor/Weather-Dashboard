@@ -1,3 +1,4 @@
+/* general stylings for page format*/
 body{
     background-color: 	#E0E0E0;
 }
@@ -10,25 +11,32 @@ header{
     margin-top: 50px;
 }
 
+/* stylings for the 5 day forecast  */
 .forecast-day{
     color: white;
     padding: 10px;
-    min-height: 100%;
+    height: 12rem;
+    margin-top: 10px;
     margin-right: 20px;
 }
 
 .forecast-row{
     margin-top: 20px;
 }
+
+/* Stylings for the search and favourites tab on the left side of the page */
 .side-bar{
     padding-right: 50px;
     margin-bottom: 50px;
 }
-.info-row{
-    border: 2px solid black;
+
+.btn-fav{
+    min-width: 100%;
     background-color: white;
 }
-.btn-test{
-    min-width: 100%;
+
+/* Stylings for today's weather information */
+.info-row{
+    border: 2px solid black;
     background-color: white;
 }

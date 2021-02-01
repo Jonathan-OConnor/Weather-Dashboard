@@ -7,24 +7,26 @@ if (localStorage.favs) {
     favs = JSON.parse(localStorage.favs)
 }
 
+// populate the html page of the page
 document.getElementById("current-data").innerText += ` (${currentDayFormat})`
-
 buildFavs()
 buildForecast()
 
+// function to build list of favourites
 function buildFavs() {
     for (var i = 0; i < favs.length; i++) {
         var favRow = document.createElement("div")
         favRow.class = "row"
         document.getElementById("favourites").appendChild(favRow)
         var newFav = document.createElement("button")
-        newFav.setAttribute("class", "btn btn-outline-dark btn-test")
+        newFav.setAttribute("class", "btn btn-outline-dark btn-fav")
         newFav.setAttribute("onClick", `updateInformation("${favs[i]}")`)
         newFav.innerText = favs[i]
         favRow.appendChild(newFav)
     }
 }
 
+// function to get the dates for the five day forecast
 function buildForecast() {
     for (var i = 1; i < 6; i++) {
         document.getElementById(`day-${i}-date`).innerText = currentDay.add(1, 'd').format("M/D/Y")
@@ -41,6 +43,7 @@ async function citySearch(event) {
 
 }
 
+// function called when user searches for a city, updates the forecast and current information
 async function updateInformation(city) {
     currentData = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=557ace5a3feab4dc1227705af9d390c9`).then(r => r.json())
 
@@ -59,7 +62,7 @@ async function updateInformation(city) {
 
 
     // update text area to display weather data
-    document.getElementById("current-data").innerHTML = `${currentData.name} (${currentDayFormat}) <img src="http://openweathermap.org/img/wn/${weatherImg}.png" /> `
+    document.getElementById("current-data").innerHTML = `${currentData.name} (${currentDayFormat}) <img src="https://openweathermap.org/img/wn/${weatherImg}.png" /> `
     document.getElementById("temp").innerText = `Temperature: ${currentTemp} °C`
     document.getElementById("humidity").innerText = `Humidity: ${currentHumidity}%`
     document.getElementById("wind-speed").innerText = `Wind Speed: ${currentWindSpeed} KPH`
@@ -73,7 +76,7 @@ async function updateInformation(city) {
 
         document.getElementById(`day-${i}-date`).innerText = currentDay.add(i, 'd').format("M/D/Y")
         currentDay= moment()
-        document.getElementById(`day-${i}-date`).innerHTML += `<img src='http://openweathermap.org/img/wn/${forecastData.daily[i].weather[0].icon}.png' />`
+        document.getElementById(`day-${i}-date`).innerHTML += `<img src='https://openweathermap.org/img/wn/${forecastData.daily[i].weather[0].icon}.png' />`
         document.getElementById(`day-${i}-temp`).innerText = `Temperature: ${temp} °C`
         document.getElementById(`day-${i}-humidity`).innerText = `Humidity: ${humidity}%`
     }
@@ -85,7 +88,7 @@ async function updateInformation(city) {
         favRow.class = "row"
         document.getElementById("favourites").appendChild(favRow)
         var newFav = document.createElement("button")
-        newFav.setAttribute("class", "btn btn-outline-dark btn-test")
+        newFav.setAttribute("class", "btn btn-outline-dark btn-fav")
         newFav.setAttribute("onClick", `updateInformation("${currentData.name}")`)
         newFav.innerText = currentData.name
         favRow.appendChild(newFav)
