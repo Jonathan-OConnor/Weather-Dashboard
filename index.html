@@ -16,7 +16,7 @@
     </header>
     <div class="container">
         <div class="row">
-            <div class="col-12 col-lg-3 side-bar">
+            <aside class="col-12 col-lg-3 side-bar">
                 <h3>Search for a City:</h3>
                 <form onsubmit="citySearch(event)">
                     <input type="text" id="city">
@@ -25,12 +25,12 @@
                 <div style="display:none" id="error-msg">
                     <p style="color: red;">Please enter a valid city</p>
                 </div>
-                <div id="favourites">
+                <article id="favourites">
                     <h2>Favourites:</h2>
-                </div>
-            </div>
-            <div class="col-12 col-lg-9">
-                <div class="row info-row" id="info-row">
+                </article>
+            </aside>
+            <section class="col-12 col-lg-9">
+                <article class="row info-row" id="info-row">
                     <div class="col">
                         <h2 id="current-data">City</h2>
                     </div>
@@ -39,8 +39,8 @@
                     <p id="wind-speed">Wind Speed:</p>
                     <p id="uv-index">UV Index:</p>
 
-                </div>
-                <div class="row forecast-row" id="forecast-row">
+                </article>
+                <article class="row forecast-row" id="forecast-row">
                     <h2>5 Day Forecast: </h2>
                     <div class="row">
                         <div class="card bg-primary border-dark forecast-day" style="width: 10rem" id="day-1">
@@ -75,10 +75,9 @@
 
                         </div>
                     </div>
-                </div>
-            </div>
+                </article>
+            </section>
         </div>
-
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
